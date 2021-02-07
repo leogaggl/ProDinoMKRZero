@@ -13,7 +13,7 @@
 // Date: 28.02.2020
 // Author: Plamen Kovandjiev <p.kovandiev@kmpelectronics.eu>
 
-#include <KMPProDinoMKRZero.h>
+#include <ProDinoMKRZero.h>
 #include <MKRGSM.h>
 
 #include "arduino_secrets.h"
@@ -59,8 +59,8 @@ void setup()
 	Serial.begin(115200);
 	Serial.println("Starting GPRSUdpNtpTest example...");
 
-	KMPProDinoMKRZero.init(ProDino_MKR_GSM);
-	//KMPProDinoMKRZero.init(ProDino_MKR_GSM_Ethernet);
+	ProDinoMKRZero.init(ProDino_MKR_GSM);
+	//ProDinoMKRZero.init(ProDino_MKR_GSM_Ethernet);
 
 	// Enable GSM modem debug
 	MODEM.debug();
@@ -99,7 +99,7 @@ void loop()
 			printResets();
 
 			_ledStatus = false;
-			KMPProDinoMKRZero.OffStatusLed();
+			ProDinoMKRZero.OffStatusLed();
 
 			// If the device can't get data 10 consequence times restart GSM
 			if (_noReceive > 10)
@@ -121,7 +121,7 @@ void loop()
 
 	// Change status led. On->Off or Off->On.
 	_ledStatus = !_ledStatus;
-	KMPProDinoMKRZero.SetStatusLed(_ledStatus);
+	ProDinoMKRZero.SetStatusLed(_ledStatus);
 
 	// We've received a packet, read the data from it
 	Udp.read(packetBuffer, NTP_PACKET_SIZE); // read the packet into the buffer

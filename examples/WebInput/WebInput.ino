@@ -11,7 +11,7 @@
 // Date: 18.09.2018
 // Author: Plamen Kovandjiev <p.kovandiev@kmpelectronics.eu>
 
-#include "KMPProDinoMKRZero.h"
+#include "ProDinoMKRZero.h"
 #include "KMPCommon.h"
 
 // If in debug mode - print debug information in Serial. Comment in production code, this bring performance.
@@ -52,7 +52,7 @@ void setup()
 #endif
 
 	// Init Dino board. Set pins, start W5500.
-	KMPProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
+	ProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
 
 	// Start the Ethernet connection and the server.
 	Ethernet.begin(_mac, _ip);
@@ -88,7 +88,7 @@ void loop()
 #endif
 
 	// If client connected switch On status led.
-	KMPProDinoMKRZero.OnStatusLed();
+	ProDinoMKRZero.OnStatusLed();
 
 	// Read client request.
 	ReadClientRequest();
@@ -98,7 +98,7 @@ void loop()
 	_client.stop();
 
 	// If client disconnected switch Off status led.
-	KMPProDinoMKRZero.OffStatusLed();
+	ProDinoMKRZero.OffStatusLed();
 
 #ifdef DEBUG
 	Serial.println(">> Client disconnected.");
@@ -191,7 +191,7 @@ String BuildPage()
 
 		char* cellColor;
 		char* cellStatus;
-		if (KMPProDinoMKRZero.GetOptoInState(i))
+		if (ProDinoMKRZero.GetOptoInState(i))
 		{
 			cellColor = (char*)RED;
 			cellStatus = (char*)W_ON;

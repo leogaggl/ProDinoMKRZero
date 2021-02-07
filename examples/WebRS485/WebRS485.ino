@@ -15,7 +15,7 @@
 //		Before start this example you need:
 //		Connect RS485 (make echo, and configured 19200, 8N1) device to RS485 port.
 
-#include "KMPProDinoMKRZero.h"
+#include "ProDinoMKRZero.h"
 #include "KMPCommon.h"
 
 // If in debug mode - print debug information in Serial. Comment in production code, this bring performance.
@@ -52,9 +52,9 @@ void setup()
 #endif
 
 	// Init Dino board. Set pins, start W5500.
-	KMPProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
+	ProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
 	// Start RS485 with baud 19200 and 8N1.
-	KMPProDinoMKRZero.RS485Begin(19200);
+	ProDinoMKRZero.RS485Begin(19200);
 
 	// Start the Ethernet connection and the server.
 	Ethernet.begin(_mac, _ip);
@@ -90,7 +90,7 @@ void loop()
 #endif
 
 	// If client connected switch On status led.
-	KMPProDinoMKRZero.OnStatusLed();
+	ProDinoMKRZero.OnStatusLed();
 
 	// Read client request.
 	ReadClientRequest();
@@ -100,7 +100,7 @@ void loop()
 	_client.stop();
 
 	// If client disconnected switch Off status led.
-	KMPProDinoMKRZero.OffStatusLed();
+	ProDinoMKRZero.OffStatusLed();
 
 #ifdef DEBUG
 	Serial.println(">> Client disconnected.");
@@ -163,7 +163,7 @@ bool ReadClientRequest()
 	String dataToSend = GetValue(lastRow, "data");
 
 	// Transmit data.
-	KMPProDinoMKRZero.RS485Write(dataToSend);
+	ProDinoMKRZero.RS485Write(dataToSend);
 
 #ifdef DEBUG
 	Serial.println(">> End client request.");
@@ -204,7 +204,7 @@ String BuildPage()
 	String receivedData = "";
 	int i;
 	// Reading data from the RS485 port.
-	while ((i = KMPProDinoMKRZero.RS485Read()) != -1)
+	while ((i = ProDinoMKRZero.RS485Read()) != -1)
 	{
 		// Adding received data in a buffer.
 		receivedData += (char)i;

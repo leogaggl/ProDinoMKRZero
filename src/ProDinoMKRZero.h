@@ -1,4 +1,4 @@
-// KMPProDinoMKRZero.h
+// ProDinoMKRZero.h
 // Company: KMP Electronics Ltd, Bulgaria
 // Web: https://kmpelectronics.eu/
 // Supported boards: 
@@ -65,7 +65,7 @@ const char TEXT_HTML[] = "text/html; charset=utf-8";
 const char PRODINO_MKRZERO[] = "ProDino MKR Zero series";
 const char URL_KMPELECTRONICS_EU_PRODINO_MKRZERO[] = "https://kmpelectronics.eu/products/";
 
-class KMPProDinoMKRZeroClass
+class ProDinoMKRZeroClass
 {
  public:
 	/**
@@ -300,6 +300,6 @@ class KMPProDinoMKRZeroClass
 		void InitGSM(bool startGSM);
 };
 
-extern KMPProDinoMKRZeroClass KMPProDinoMKRZero;
+extern ProDinoMKRZeroClass ProDinoMKRZero;
 
 #endif

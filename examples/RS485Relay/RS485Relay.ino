@@ -13,7 +13,7 @@
 // Date: 13.09.2018
 // Author: Plamen Kovandjiev <p.kovandiev@kmpelectronics.eu>
 
-#include "KMPProDinoMKRZero.h"
+#include "ProDinoMKRZero.h"
 #include "KMPCommon.h"
 
 // If in debug mode - print debug information in Serial. Comment in production code, this bring performance.
@@ -43,9 +43,9 @@ void setup()
 #endif
 
 	// Init Dino board. Set pins, start W5500.
-	KMPProDinoMKRZero.init(ProDino_MKR_Zero);
+	ProDinoMKRZero.init(ProDino_MKR_Zero);
 	// Start RS485 with bound 19200 and 8N1.
-	KMPProDinoMKRZero.RS485Begin(19200);
+	ProDinoMKRZero.RS485Begin(19200);
 
 #ifdef DEBUG
 	Serial.println("The example RS485Relay is started.");
@@ -60,7 +60,7 @@ void setup()
 */
 void loop() {
 	// Waiting for a data.
-	int i = KMPProDinoMKRZero.RS485Read();
+	int i = ProDinoMKRZero.RS485Read();
 
 	if (i == -1)
 	{
@@ -72,7 +72,7 @@ void loop() {
 #endif
 
 	// If in RS485 port has any data - Status led is ON
-	KMPProDinoMKRZero.OnStatusLed();
+	ProDinoMKRZero.OnStatusLed();
 
 	uint8_t buffPos = 0;
 
@@ -85,7 +85,7 @@ void loop() {
 		Serial.write((char)i);
 #endif
 		// Reading a next char.
-		i = KMPProDinoMKRZero.RS485Read();
+		i = ProDinoMKRZero.RS485Read();
 	}
 
 	_dataBuffer[buffPos] = CH_NONE;
@@ -95,7 +95,7 @@ void loop() {
 #endif
 
 	// All data has been read. Off status led. 
-	KMPProDinoMKRZero.OffStatusLed();
+	ProDinoMKRZero.OffStatusLed();
 
 	ProcessData();
 }
@@ -123,7 +123,7 @@ void ProcessData()
 			// Set relay status if only chars are 0 or 1.
 			if (_dataBuffer[i] == CH_0 || _dataBuffer[i] == CH_1)
 			{
-				KMPProDinoMKRZero.SetRelayState(relayNum, _dataBuffer[i] == CH_1);
+				ProDinoMKRZero.SetRelayState(relayNum, _dataBuffer[i] == CH_1);
 			}
 
 			++relayNum;
@@ -135,7 +135,7 @@ void ProcessData()
 	int relayState = 0;
 	for (int j = CMD_PREFFIX_LEN; j < CMD_PREFFIX_LEN + RELAY_COUNT; j++)
 	{
-		_resultBuffer[j] = KMPProDinoMKRZero.GetRelayState(relayState++) ? CH_1 : CH_0;
+		_resultBuffer[j] = ProDinoMKRZero.GetRelayState(relayState++) ? CH_1 : CH_0;
 	}
 	
 	_resultBuffer[CMD_PREFFIX_LEN + RELAY_COUNT] = CH_NONE;
@@ -146,5 +146,5 @@ void ProcessData()
 #endif
 
 	// Transmit result.
-	KMPProDinoMKRZero.RS485Write(_resultBuffer);
+	ProDinoMKRZero.RS485Write(_resultBuffer);
 }

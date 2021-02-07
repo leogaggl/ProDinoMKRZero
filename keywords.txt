@@ -6,7 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-KMPProDinoMKRZero	KEYWORD1
+ProDinoMKRZero	KEYWORD1
 KMPCommon	KEYWORD1
 
 #######################################

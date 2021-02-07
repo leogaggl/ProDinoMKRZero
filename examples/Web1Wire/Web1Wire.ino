@@ -20,7 +20,7 @@
 //		Connect DS18B20 sensor(s) to GROVE connector. Use pins: 
 //			- GROVE_D0, VCC+, GND(-);
 
-#include "KMPProDinoMKRZero.h"
+#include "ProDinoMKRZero.h"
 #include "KMPCommon.h"
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -83,7 +83,7 @@ void setup(void)
 #endif
 
 	// Init Dino board. Set pins, start W5500.
-	KMPProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
+	ProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
 
 	// Fix a problem with 1Wire initialization sensor. Thanks David, david.durstberger@gmail.com
 	pinMode(SENSORS_PIN, INPUT);
@@ -126,7 +126,7 @@ void loop()
 #endif
 
 	// If client connected switch On status led.
-	KMPProDinoMKRZero.OnStatusLed();
+	ProDinoMKRZero.OnStatusLed();
 
 	// Read client request.
 	ReadClientRequest();
@@ -136,7 +136,7 @@ void loop()
 	_client.stop();
 
 	// If client disconnected switch Off status led.
-	KMPProDinoMKRZero.OffStatusLed();
+	ProDinoMKRZero.OffStatusLed();
 
 #ifdef DEBUG
 	Serial.println(">> Client disconnected.");

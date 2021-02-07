@@ -18,7 +18,7 @@
 //			- first  sensor GROVE_D0, Vcc+, Gnd(-);
 //			- second sensor GROVE_D1, Vcc+, Gnd(-);
 
-#include "KMPProDinoMKRZero.h"
+#include "ProDinoMKRZero.h"
 #include "KMPCommon.h"
 #include <DHT.h>
 
@@ -87,7 +87,7 @@ void setup(void)
 #endif
 
 	// Init Dino board. Set pins, start W5500.
-	KMPProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
+	ProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
 
 	// Start the Ethernet connection and the server.
 	Ethernet.begin(_mac, _ip);
@@ -144,7 +144,7 @@ void loop()
 #endif
 
 	// If client connected switch On status led.
-	KMPProDinoMKRZero.OnStatusLed();
+	ProDinoMKRZero.OnStatusLed();
 
 	// Read client request.
 	ReadClientRequest();
@@ -154,7 +154,7 @@ void loop()
 	_client.stop();
 
 	// If client disconnected switch Off status led.
-	KMPProDinoMKRZero.OffStatusLed();
+	ProDinoMKRZero.OffStatusLed();
 
 #ifdef DEBUG
 	Serial.println(">> Client disconnected.");

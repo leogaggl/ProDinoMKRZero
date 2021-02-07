@@ -1,4 +1,4 @@
-// KMPProDinoMKRZero.cpp
+// ProDinoMKRZero.cpp
 // Company: KMP Electronics Ltd, Bulgaria
 // Web: https://kmpelectronics.eu/
 // Supported boards: 
@@ -12,7 +12,7 @@
 // Date: 27.09.2018
 // Author: Plamen Kovandjiev <p.kovandiev@kmpelectronics.eu> & Dimitar Antonov <d.antonov@kmpelectronics.eu>
 
-#include "KMPProDinoMKRZero.h"
+#include "ProDinoMKRZero.h"
 
 // Relay outputs pins.
 #define Rel1Pin  21 // PA07
@@ -50,15 +50,15 @@ const uint8_t Relay_Pins[RELAY_COUNT] =
 const int OPTOIN_PINS[OPTOIN_COUNT] =
 { OptoIn1Pin, OptoIn2Pin, OptoIn3Pin, OptoIn4Pin };
 
-KMPProDinoMKRZeroClass KMPProDinoMKRZero;
+ProDinoMKRZeroClass ProDinoMKRZero;
 BoardType _board;
 
-void KMPProDinoMKRZeroClass::init(BoardType board)
+void ProDinoMKRZeroClass::init(BoardType board)
 {
 	init(board, true, true);
 }
 
-void KMPProDinoMKRZeroClass::init(BoardType board, bool startEthernet, bool startGSM)
+void ProDinoMKRZeroClass::init(BoardType board, bool startEthernet, bool startGSM)
 {
 	_board = board;
 
@@ -86,7 +86,7 @@ void KMPProDinoMKRZeroClass::init(BoardType board, bool startEthernet, bool star
 	InitGSM(startGSM);
 }
 
-void KMPProDinoMKRZeroClass::InitEthernet(bool startEthernet)
+void ProDinoMKRZeroClass::InitEthernet(bool startEthernet)
 {
 	if (_board == ProDino_MKR_Zero_Ethernet || _board == ProDino_MKR_GSM_Ethernet)
 	{
@@ -105,7 +105,7 @@ void KMPProDinoMKRZeroClass::InitEthernet(bool startEthernet)
 	}
 }
 
-void KMPProDinoMKRZeroClass::InitGSM(bool startGSM)
+void ProDinoMKRZeroClass::InitGSM(bool startGSM)
 {
 	if (_board == ProDino_MKR_GSM || _board == ProDino_MKR_GSM_Ethernet)
 	{
@@ -125,7 +125,7 @@ void KMPProDinoMKRZeroClass::InitGSM(bool startGSM)
 	}
 }
 
-void KMPProDinoMKRZeroClass::RestartGSM()
+void ProDinoMKRZeroClass::RestartGSM()
 {
 	// Reset occurs when a low level is applied to the RESET_N pin, which is normally set high by an internal pull-up, for a valid time period min 10 mS
 	digitalWrite(GSM_RESETN, HIGH);
@@ -133,7 +133,7 @@ void KMPProDinoMKRZeroClass::RestartGSM()
 	digitalWrite(GSM_RESETN, LOW);
 }
 
-void KMPProDinoMKRZeroClass::RestartEthernet()
+void ProDinoMKRZeroClass::RestartEthernet()
 {
 	// RSTn Pull-up Reset (Active low) RESET should be held low at least 500 us for W5500 reset.
 	digitalWrite(W5500ResetPin, LOW);
@@ -141,27 +141,27 @@ void KMPProDinoMKRZeroClass::RestartEthernet()
 	digitalWrite(W5500ResetPin, HIGH);
 }
 
-bool KMPProDinoMKRZeroClass::GetStatusLed()
+bool ProDinoMKRZeroClass::GetStatusLed()
 {
 	return digitalRead(StatusLedPin);
 }
 
-void KMPProDinoMKRZeroClass::SetStatusLed(bool state)
+void ProDinoMKRZeroClass::SetStatusLed(bool state)
 {
 	digitalWrite(StatusLedPin, state);
 }
 
-void KMPProDinoMKRZeroClass::OnStatusLed()
+void ProDinoMKRZeroClass::OnStatusLed()
 {
 	SetStatusLed(true);
 }
 
-void KMPProDinoMKRZeroClass::OffStatusLed()
+void ProDinoMKRZeroClass::OffStatusLed()
 {
 	SetStatusLed(false);
 }
 
-void KMPProDinoMKRZeroClass::NotStatusLed()
+void ProDinoMKRZeroClass::NotStatusLed()
 {
 	SetStatusLed(!GetStatusLed());
 }
@@ -170,7 +170,7 @@ void KMPProDinoMKRZeroClass::NotStatusLed()
 /* Relays methods. */
 /* ----------------------------------------------------------------------- */
 
-void KMPProDinoMKRZeroClass::SetRelayState(uint8_t relayNumber, bool state)
+void ProDinoMKRZeroClass::SetRelayState(uint8_t relayNumber, bool state)
 {
 	// Check if relayNumber is out of range - return.
 	if (relayNumber > RELAY_COUNT - 1)
@@ -181,12 +181,12 @@ void KMPProDinoMKRZeroClass::SetRelayState(uint8_t relayNumber, bool state)
 	digitalWrite(Relay_Pins[relayNumber], state);
 }
 
-void KMPProDinoMKRZeroClass::SetRelayState(Relay relay, bool state)
+void ProDinoMKRZeroClass::SetRelayState(Relay relay, bool state)
 {
 	SetRelayState((uint8_t)relay, state);
 }
 
-void KMPProDinoMKRZeroClass::SetAllRelaysState(bool state)
+void ProDinoMKRZeroClass::SetAllRelaysState(bool state)
 {
 	for (uint8_t i = 0; i < RELAY_COUNT; i++)
 	{
@@ -194,17 +194,17 @@ void KMPProDinoMKRZeroClass::SetAllRelaysState(bool state)
 	}
 }
 
-void KMPProDinoMKRZeroClass::SetAllRelaysOn()
+void ProDinoMKRZeroClass::SetAllRelaysOn()
 {
 	SetAllRelaysState(true);
 }
 
-void KMPProDinoMKRZeroClass::SetAllRelaysOff()
+void ProDinoMKRZeroClass::SetAllRelaysOff()
 {
 	SetAllRelaysState(false);
 }
 
-bool KMPProDinoMKRZeroClass::GetRelayState(uint8_t relayNumber)
+bool ProDinoMKRZeroClass::GetRelayState(uint8_t relayNumber)
 {
 	// Check if relayNumber is out of range - return false.
 	if (relayNumber > RELAY_COUNT - 1)
@@ -215,7 +215,7 @@ bool KMPProDinoMKRZeroClass::GetRelayState(uint8_t relayNumber)
 	return digitalRead(Relay_Pins[relayNumber]);
 }
 
-bool KMPProDinoMKRZeroClass::GetRelayState(Relay relay)
+bool ProDinoMKRZeroClass::GetRelayState(Relay relay)
 {
 	return GetRelayState((uint8_t)relay);
 }
@@ -224,7 +224,7 @@ bool KMPProDinoMKRZeroClass::GetRelayState(Relay relay)
 /* Opto input methods. */
 /* ----------------------------------------------------------------------- */
 
-bool KMPProDinoMKRZeroClass::GetOptoInState(uint8_t optoInNumber)
+bool ProDinoMKRZeroClass::GetOptoInState(uint8_t optoInNumber)
 {
 	// Check if optoInNumber is out of range - return false.
 	if (optoInNumber > OPTOIN_COUNT - 1)
@@ -235,7 +235,7 @@ bool KMPProDinoMKRZeroClass::GetOptoInState(uint8_t optoInNumber)
 	return !digitalRead(OPTOIN_PINS[optoInNumber]);
 }
 
-bool KMPProDinoMKRZeroClass::GetOptoInState(OptoIn optoIn)
+bool ProDinoMKRZeroClass::GetOptoInState(OptoIn optoIn)
 {
 	return GetOptoInState((uint8_t)optoIn);
 }
@@ -244,17 +244,17 @@ bool KMPProDinoMKRZeroClass::GetOptoInState(OptoIn optoIn)
 /* RS485 methods. */
 /* ----------------------------------------------------------------------- */
 
-void KMPProDinoMKRZeroClass::RS485Begin(unsigned long baud)
+void ProDinoMKRZeroClass::RS485Begin(unsigned long baud)
 {
 	RS485Begin(baud, SERIAL_8N1);
 }
 
-void KMPProDinoMKRZeroClass::RS485Begin(unsigned long baud, uint16_t config)
+void ProDinoMKRZeroClass::RS485Begin(unsigned long baud, uint16_t config)
 {
 	RS485Serial.begin(baud, config);
 }
 
-void KMPProDinoMKRZeroClass::RS485End()
+void ProDinoMKRZeroClass::RS485End()
 {
 	RS485Serial.end();
 }
@@ -280,7 +280,7 @@ void RS485EndWrite()
 	digitalWrite(RS485Pin, RS485Receive);
 }
 
-size_t KMPProDinoMKRZeroClass::RS485Write(uint8_t data)
+size_t ProDinoMKRZeroClass::RS485Write(uint8_t data)
 {
 	RS485BeginWrite();
 
@@ -291,12 +291,12 @@ size_t KMPProDinoMKRZeroClass::RS485Write(uint8_t data)
 	return result;
 }
 
-size_t KMPProDinoMKRZeroClass::RS485Write(char data)
+size_t ProDinoMKRZeroClass::RS485Write(char data)
 {
 	return RS485Write((uint8_t)data);
 }
 
-size_t KMPProDinoMKRZeroClass::RS485Write(const char* data)
+size_t ProDinoMKRZeroClass::RS485Write(const char* data)
 {
 	RS485BeginWrite();
 
@@ -313,7 +313,7 @@ size_t KMPProDinoMKRZeroClass::RS485Write(const char* data)
 	return result;
 }
 
-size_t KMPProDinoMKRZeroClass::RS485Write(uint8_t* data, uint8_t dataLen)
+size_t ProDinoMKRZeroClass::RS485Write(uint8_t* data, uint8_t dataLen)
 {
 	RS485BeginWrite();
 
@@ -328,12 +328,12 @@ size_t KMPProDinoMKRZeroClass::RS485Write(uint8_t* data, uint8_t dataLen)
 	return result;
 }
 
-int KMPProDinoMKRZeroClass::RS485Read()
+int ProDinoMKRZeroClass::RS485Read()
 {
 	return RS485Read(10, 10);
 }
 
-int KMPProDinoMKRZeroClass::RS485Read(unsigned long delayWait, uint8_t repeatTime)
+int ProDinoMKRZeroClass::RS485Read(unsigned long delayWait, uint8_t repeatTime)
 {
 	// If the buffer is empty, wait until the data arrives.
 	while (!RS485Serial.available())

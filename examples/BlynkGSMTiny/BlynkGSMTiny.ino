@@ -32,7 +32,7 @@
 //		DHT1T -> V9 {Type: "Value Display", Name: "Temperature", Color: "Green", Input: "V9", Min:"-40", Max:"80", ReadingFrecuency: "5sec" }
 //		DHT1H -> V10 {Type: "Value Display", Name: "Humidity", Color: "Green", Input: "V10", Min:"0", Max:"100", ReadingFrecuency: "5sec" }
 
-#include <KMPProDinoMKRZero.h>
+#include <ProDinoMKRZero.h>
 #include <KMPCommon.h>
 #include <DHT.h>
 
@@ -120,7 +120,7 @@ void setup()
 #endif
 
 	// Init Dino board. Set pins, start GSM.
-	KMPProDinoMKRZero.init(ProDino_MKR_GSM);
+	ProDinoMKRZero.init(ProDino_MKR_GSM);
 
 #ifdef DEBUG
 	Serial.println("Initializing modem...");
@@ -229,7 +229,7 @@ void ProcessOptoInputs(bool force)
 	for (int i = 0; i < OPTOIN_COUNT; i++)
 	{
 		OptoIn_t* optoInput = &_optoInputs[i];
-		bool currentStatus = KMPProDinoMKRZero.GetOptoInState(optoInput->Input);
+		bool currentStatus = ProDinoMKRZero.GetOptoInState(optoInput->Input);
 		if (optoInput->Status != currentStatus || ((bool)optoInput->Widget.getValue()) != currentStatus || force)
 		{
 			Serial.println("Opto input " + String(i + 1) + " status changed to -> \"" + currentStatus + "\". WidgetLED value: " + optoInput->Widget.getValue());
@@ -247,7 +247,7 @@ void ProcessOptoInputs(bool force)
  */
 void SetRelay(Relay relay, int status)
 {
-	KMPProDinoMKRZero.SetRelayState(relay, status == 1);
+	ProDinoMKRZero.SetRelayState(relay, status == 1);
 }
 
 /*****************************
@@ -280,7 +280,7 @@ BLYNK_WRITE(V1)
 */
 BLYNK_READ(V1)
 {
-	Blynk.virtualWrite(V1, KMPProDinoMKRZero.GetRelayState(Relay1));
+	Blynk.virtualWrite(V1, ProDinoMKRZero.GetRelayState(Relay1));
 }
 
 /**

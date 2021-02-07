@@ -13,7 +13,7 @@
 // Date: 19.09.2018
 // Author: Plamen Kovandjiev <p.kovandiev@kmpelectronics.eu>
 
-#include "KMPProDinoMKRZero.h"
+#include "ProDinoMKRZero.h"
 #include "KMPCommon.h"
 
 // If in debug mode - print debug information in Serial. Comment in production code, this bring performance.
@@ -52,7 +52,7 @@ void setup()
 #endif
 
 	// Init Dino board. Set pins, start W5500.
-	KMPProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
+	ProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
 
 	// Start the Ethernet connection and the server.
 	Ethernet.begin(_mac, _ip);
@@ -93,7 +93,7 @@ void loop()
 		WriteClientResponse();
 
 		// If client disconnected switch Off status led.
-		KMPProDinoMKRZero.OffStatusLed();
+		ProDinoMKRZero.OffStatusLed();
 	}
 
 #ifdef DEBUG
@@ -124,7 +124,7 @@ bool ReadClientRequest()
 	}
 
 	// If client connected switch On status led.
-	KMPProDinoMKRZero.OnStatusLed();
+	ProDinoMKRZero.OnStatusLed();
 
 #ifdef DEBUG
 	Serial.println(data);
@@ -133,7 +133,7 @@ bool ReadClientRequest()
 	// Validate input data.
 	if (data.length() < CMD_PREFFIX_LEN || !data.startsWith(CMD_PREFFIX))
 	{
-		KMPProDinoMKRZero.OffStatusLed();
+		ProDinoMKRZero.OffStatusLed();
 #ifdef DEBUG
 		Serial.println("Command is not valid.");
 #endif
@@ -156,7 +156,7 @@ void WriteClientResponse()
 	int relayState = 0;
 	for (int j = CMD_PREFFIX_LEN; j < CMD_PREFFIX_LEN + OPTOIN_COUNT; j++)
 	{
-		_resultBuffer[j] = KMPProDinoMKRZero.GetOptoInState(relayState++) ? CH_1 : CH_0;
+		_resultBuffer[j] = ProDinoMKRZero.GetOptoInState(relayState++) ? CH_1 : CH_0;
 	}
 
 	// Send output packet

@@ -38,7 +38,7 @@
 // *Legend: every message includes topic (as string) and payload (as binary array). 
 //  By easy describe them we use following pattern: "topic:[payload]". If payload was empty we use [].
 
-#include "KMPProDinoMKRZero.h"
+#include "ProDinoMKRZero.h"
 #include "KMPCommon.h"
 #include "MqttTopicHelper.h"
 #include <PubSubClient.h>
@@ -103,7 +103,7 @@ void setup()
 	Serial.begin(115200);
 
 	// Init Dino board. Set pins, start W5500.
-	KMPProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
+	ProDinoMKRZero.init(ProDino_MKR_Zero_Ethernet);
 
 	// Initialize MQTT helper
 	MqttTopicHelper.init(BASE_TOPIC, DEVICE_TOPIC, &Serial);
@@ -179,7 +179,7 @@ void publishTopic(DataType dataType, int num = 0, bool isPrintPublish = true)
 		// kmp/prodinomkrzero/relay/1:On
 		MqttTopicHelper.buildTopicWithMT(_topicBuff, 2, RELAY_TOPIC, numBuff);
 		topic = _topicBuff;
-		payload = KMPProDinoMKRZero.GetRelayState(num) ? W_ON_S : W_OFF_S;
+		payload = ProDinoMKRZero.GetRelayState(num) ? W_ON_S : W_OFF_S;
 		break;
 	case AllInputsState:
 		for (size_t i = 0; i < OPTOIN_COUNT; i++)
@@ -190,7 +190,7 @@ void publishTopic(DataType dataType, int num = 0, bool isPrintPublish = true)
 		// kmp/prodinomkrzero/input/1:On
 		MqttTopicHelper.buildTopicWithMT(_topicBuff, 2, INPUT_TOPIC, numBuff);
 		topic = _topicBuff;
-		payload = KMPProDinoMKRZero.GetOptoInState(num) ? W_ON_S : W_OFF_S;
+		payload = ProDinoMKRZero.GetOptoInState(num) ? W_ON_S : W_OFF_S;
 		break;
 	case Temperature:
 		IntToChars(num + 1, numBuff);
@@ -290,8 +290,8 @@ void callback(char* topics, byte* payload, unsigned int payloadLen)
 			{
 				printSubscribeTopic(topics, payload, payloadLen);
 				// Set relay new state.
-				if (KMPProDinoMKRZero.GetRelayState(relNum) != isOn)
-					KMPProDinoMKRZero.SetRelayState(relNum, isOn);
+				if (ProDinoMKRZero.GetRelayState(relNum) != isOn)
+					ProDinoMKRZero.SetRelayState(relNum, isOn);
 				else
 					// Publish current relay state.
 					publishTopic(RelayState, relNum);
@@ -311,7 +311,7 @@ void PublishChangedData()
 	// Get current Opto input and relay statuses.
 	for (byte i = 0; i < RELAY_COUNT; i++)
 	{
-		bool relayState = KMPProDinoMKRZero.GetRelayState(i);
+		bool relayState = ProDinoMKRZero.GetRelayState(i);
 		if (_lastRelayStatus[i] != relayState)
 		{
 			_lastRelayStatus[i] = relayState;
@@ -322,7 +322,7 @@ void PublishChangedData()
 
 	for (byte i = 0; i < OPTOIN_COUNT; i++)
 	{
-		bool inputState = KMPProDinoMKRZero.GetOptoInState(i);
+		bool inputState = ProDinoMKRZero.GetOptoInState(i);
 		if (_lastOptoInStatus[i] != inputState)
 		{
 			_lastOptoInStatus[i] = inputState;
