@@ -1,16 +1,13 @@
 // ProDinoMKRZero.cpp
-// Company: KMP Electronics Ltd, Bulgaria
-// Web: https://kmpelectronics.eu/
+// Company: 		KMP Electronics Ltd, Bulgaria
+// Web: 			https://kmpelectronics.eu/
 // Supported boards: 
 //		- KMP ProDino MKR Zero V1 https://kmpelectronics.eu/products/prodino-mkr-zero-v1/
-//		- KMP ProDino MKR Zero Ethernet V1 https://kmpelectronics.eu/products/prodino-mkr-zero-ethernet-v1/
-//		- KMP ProDino MKR GSM V1 https://kmpelectronics.eu/products/prodino-mkr-gsm-v1/
-//		- KMP ProDino MKR GSM Ethernet V1  https://kmpelectronics.eu/products/prodino-mkr-gsm-ethernet-v1/
 // Description:
-//		Library for supported board. It contains base methods to work with boards.
-// Version: 1.1.0
-// Date: 27.09.2018
-// Author: Plamen Kovandjiev <p.kovandiev@kmpelectronics.eu> & Dimitar Antonov <d.antonov@kmpelectronics.eu>
+//		Minimal library for ProDino MKR versions excluding Ethernet and GSM dependencies from original library.
+// Version: 1.1.1
+// Date: 09.02.2021
+// Author: Plamen Kovandjiev <p.kovandiev@kmpelectronics.eu>, Dimitar Antonov <d.antonov@kmpelectronics.eu>, Leo Gaggl <leo@opensensing.com>
 
 #include "ProDinoMKRZero.h"
 
@@ -81,64 +78,6 @@ void ProDinoMKRZeroClass::init(BoardType board, bool startEthernet, bool startGS
 	// RS485 pin init.
 	pinMode(RS485Pin, OUTPUT);
 	digitalWrite(RS485Pin, RS485Receive);
-
-	InitEthernet(startEthernet);
-	InitGSM(startGSM);
-}
-
-void ProDinoMKRZeroClass::InitEthernet(bool startEthernet)
-{
-	if (_board == ProDino_MKR_Zero_Ethernet || _board == ProDino_MKR_GSM_Ethernet)
-	{
-		// W5500 pin init.
-		pinMode(W5500ResetPin, OUTPUT);
-
-		if (startEthernet)
-		{
-			RestartEthernet();
-			Ethernet.init(W5500CSPin);
-		}
-		else
-		{
-			digitalWrite(W5500ResetPin, LOW);
-		}
-	}
-}
-
-void ProDinoMKRZeroClass::InitGSM(bool startGSM)
-{
-	if (_board == ProDino_MKR_GSM || _board == ProDino_MKR_GSM_Ethernet)
-	{
-		// Start serial communication with the GSM modem
-		SerialGSM.begin(115200);
-
-		// Turn on the GSM module by triggering GSM_RESETN pin
-		pinMode(GSM_RESETN, OUTPUT);
-		if (startGSM)
-		{
-			RestartGSM();
-		}
-		else
-		{
-			digitalWrite(GSM_RESETN, HIGH);
-		}
-	}
-}
-
-void ProDinoMKRZeroClass::RestartGSM()
-{
-	// Reset occurs when a low level is applied to the RESET_N pin, which is normally set high by an internal pull-up, for a valid time period min 10 mS
-	digitalWrite(GSM_RESETN, HIGH);
-	delay(20);
-	digitalWrite(GSM_RESETN, LOW);
-}
-
-void ProDinoMKRZeroClass::RestartEthernet()
-{
-	// RSTn Pull-up Reset (Active low) RESET should be held low at least 500 us for W5500 reset.
-	digitalWrite(W5500ResetPin, LOW);
-	delay(600);
-	digitalWrite(W5500ResetPin, HIGH);
 }
 
 bool ProDinoMKRZeroClass::GetStatusLed()

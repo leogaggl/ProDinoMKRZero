@@ -3,21 +3,18 @@
 // Web: https://kmpelectronics.eu/
 // Supported boards: 
 //		- KMP ProDino MKR Zero V1 https://kmpelectronics.eu/products/prodino-mkr-zero-v1/
-//		- KMP ProDino MKR Zero Ethernet V1 https://kmpelectronics.eu/products/prodino-mkr-zero-ethernet-v1/
-//		- KMP ProDino MKR GSM V1 https://kmpelectronics.eu/products/prodino-mkr-gsm-v1/
-//		- KMP ProDino MKR GSM Ethernet V1  https://kmpelectronics.eu/products/prodino-mkr-gsm-ethernet-v1/
+//		- KMP ProDino MKR Zero LoRaWAN V1 https://kmpelectronics.eu/products/prodino-mkr-lora-wan-v1/
 // Description:
 //		Library for supported board. It contains base methods to work with boards.
-// Version: 1.1.1
-//   Last change: We have merged PR form Oskar Viljasaar https://github.com/tshikaboom to change Ethernet2.h with new Arduino Ethernet.h library. Thank you Oskar.
+// Version: 1.2.0
+//		Last change: Removing Ethernet and GSM Dependencies for minimal PlatformIO library
 // Date: 07.01.2019
-// Author: Plamen Kovandjiev <p.kovandiev@kmpelectronics.eu> & Dimitar Antonov <d.antonov@kmpelectronics.eu>
+// Author: Plamen Kovandjiev <p.kovandiev@kmpelectronics.eu>, Dimitar Antonov <d.antonov@kmpelectronics.eu>, Leo Gaggl <leo@opensensing.com>
 
-#ifndef _KMPPRODINOMKRZERO_H
-#define _KMPPRODINOMKRZERO_H
+#ifndef _PRODINOMKRZERO_H
+#define _PRODINOMKRZERO_H
 
 #include <Arduino.h>
-#include <Ethernet.h>
 #include <HardwareSerial.h>
 
 // Inputs and outputs count.
@@ -55,10 +52,7 @@ enum OptoIn {
  */
 enum BoardType {
 	None = 0,
-	ProDino_MKR_Zero = 1,
-	ProDino_MKR_Zero_Ethernet = 2,
-	ProDino_MKR_GSM = 3,
-	ProDino_MKR_GSM_Ethernet = 4
+	ProDino_MKR_Lora = 1
 };
 
 const char TEXT_HTML[] = "text/html; charset=utf-8";
@@ -91,20 +85,6 @@ class ProDinoMKRZeroClass
 	* @brief Restarts (Stop & Start) GSM module.
 	*
 	* @return void
-	*/
-	void RestartGSM();
-
-	/**
-	* @brief Restarts (Stop & Start) Ethernet.
-	*
-	* @return void
-	*/
-	void RestartEthernet();
-
-	/**
-	* @brief Get current status LED status.
-	*
-	* @return bool If equals - true LED On, else Off.
 	*/
 	bool GetStatusLed();
 	/**
@@ -286,6 +266,15 @@ class ProDinoMKRZeroClass
 	/**
 	* @brief Read received data from RS485. Reading data with delay and repeating the operation while all data to arrive.
 	*
+	*
+	* @return int Received byte.
+	*   If result = -1 - buffer is empty, no data<para></para>
+	*   if result > -1 - valid byte to read.
+	*/
+	int RS485Read(unsigned long delayWait, uint8_t repeatTime);
+	/**
+	* @brief Read received data from RS485. Reading data with delay and repeating the operation while all data to arrive.
+	*
 	* @param delayWait Wait delay if not available to read byte in milliseconds. Default 10.
 	* @param repeatTime Repeat time if not read bytes. Default 10. All time = delayWait * repeatTime.
 	*
@@ -293,11 +282,7 @@ class ProDinoMKRZeroClass
 	*   If result = -1 - buffer is empty, no data<para></para>
 	*   if result > -1 - valid byte to read.
 	*/
-	int RS485Read(unsigned long delayWait, uint8_t repeatTime);
 
-	private:
-		void InitEthernet(bool startEthernet);
-		void InitGSM(bool startGSM);
 };
 
 extern ProDinoMKRZeroClass ProDinoMKRZero;
